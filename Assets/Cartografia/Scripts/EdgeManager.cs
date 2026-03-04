@@ -3,34 +3,41 @@ using System.Collections.Generic;
 
 public class EdgeManager : MonoBehaviour
 {
-    public GameObject linePrefab; // Un prefab con un LineRenderer y un material aditivo/transparente
-    public float baseLineWidth = 0.5f; // Multiplicador general de grosor
+    public GameObject linePrefab;
+    public float baseLineWidth = 0.5f;
 
-    private List<LineRenderer> allSecondaryEdges = new List<LineRenderer>();
-
-    public void DrawEdgesForNode(NodeController originNode)
+    public void DrawEdges(Dictionary<NodeData, NodeController> nodosInstanciados)
     {
-        foreach (var connection in originNode.data.connections)
+        // Limpiar líneas anteriores si las hay
+        foreach (Transform child in transform) { Destroy(child.gameObject); }
+
+        foreach (var kvp in nodosInstanciados)
         {
-            if (connection.targetNode == null) continue;
+            NodeData originData = kvp.Key;
+            NodeController originNode = kvp.Value;
 
-            GameObject lineObj = Instantiate(linePrefab, transform);
-            LineRenderer lr = lineObj.GetComponent<LineRenderer>();
-            
-            lr.SetPosition(0, originNode.transform.position);
-            lr.SetPosition(1, connection.targetNode.transform.position);
-
-            // El peso de la conexión dicta el grosor de la arista (ENA)
-            float calculatedWidth = connection.connectionWeight * baseLineWidth;
-            lr.startWidth = calculatedWidth;
-            lr.endWidth = calculatedWidth;
-
-            if (connection.isSecondary)
+            foreach (var connection in originData.connections)
             {
-                lr.gameObject.SetActive(false); // Oculto por defecto
-                allSecondaryEdges.Add(lr);
-                // Aquí guardaríamos una referencia en el originNode para encenderla al hacer clic
-                originNode.secondaryEdges.Add(lr); 
+                if (connection.targetNode == null || !nodosInstanciados.ContainsKey(connection.targetNode)) continue;
+
+                NodeController targetNode = nodosInstanciados[connection.targetNode];
+
+                GameObject lineObj = Instantiate(linePrefab, transform);
+                LineRenderer lr = lineObj.GetComponent<LineRenderer>();
+                
+                float calculatedWidth = connection.connectionWeight * baseLineWidth;
+                lr.startWidth = calculatedWidth;
+                lr.endWidth = calculatedWidth;
+
+                DynamicEdge dynamicEdge = lineObj.AddComponent<DynamicEdge>();
+                dynamicEdge.startNode = originNode.transform;
+                dynamicEdge.endNode = targetNode.transform;
+
+                if (connection.isSecondary)
+                {
+                    lineObj.SetActive(false);
+                    originNode.secondaryEdges.Add(lr);
+                }
             }
         }
     }

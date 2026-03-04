@@ -7,6 +7,16 @@ public class NodeData : ScriptableObject
 {
     [BoxGroup("Identidad del Nodo")]
     public string nodeTitle;
+    
+    [BoxGroup("Identidad del Nodo")]
+    [TextArea(3, 5)]
+    public string descripcionCartografica;
+
+    [BoxGroup("Identidad del Nodo")]
+    [TextArea(2, 4)]
+    public string citaExperto;
+    
+    
     public bool isMacroNode = false; // Checkbox para saber si es padre o hijo
     
     [BoxGroup("Identidad del Nodo")]
@@ -14,10 +24,12 @@ public class NodeData : ScriptableObject
     [InfoBox("Arrastra aquí el Macro-Nodo al que pertenece para que lo orbite.")]
     public NodeData parentMacroNode;
 
+    [ShowIf("isMacroNode")]
     [BoxGroup("Matriz Espacial (Posicionamiento)")]
     [EnumToggleButtons]
     public HabermasInterest ejeY_Habermas; // Y: 0, 5, 10
     
+    [ShowIf("isMacroNode")]
     [BoxGroup("Matriz Espacial (Posicionamiento)")]
     [EnumToggleButtons]
     public SchonReflection ejeX_Schon; // X: -5, 0, 5
@@ -34,7 +46,7 @@ public class NodeData : ScriptableObject
 [System.Serializable]
 public struct NodeConnection
 {
-    public NodeController targetNode; // Arrastramos el nodo de la escena aquí
+    public NodeData targetNode; // Ahora referenciamos el ScriptableObject en lugar del componente de escena
     [Range(0.1f, 1.0f)]
     public float connectionWeight; // Define el grosor de la arista
     public bool isSecondary; // Para saber si lo ocultamos hasta hacer clic

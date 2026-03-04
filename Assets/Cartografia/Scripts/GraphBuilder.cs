@@ -15,6 +15,8 @@ public class GraphBuilder : MonoBehaviour
     [Title("Configuración Espacial")]
     public float zOffsetForMicroNodes = 3f; // Distancia hacia atrás para los micro-nodos
 
+    public EdgeManager edgeManager;
+
     [Button("Generar y Posicionar Cartografía", ButtonSizes.Large)]
     public void BuildAndOrganizeGraph()
     {
@@ -84,6 +86,7 @@ public class GraphBuilder : MonoBehaviour
             }
         }
 
+        if (edgeManager != null) edgeManager.DrawEdges(nodosInstanciados);
         Debug.Log("Cartografía Generada con éxito.");
     }
 

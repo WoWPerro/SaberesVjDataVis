@@ -4,7 +4,7 @@ public class SelectionManager : MonoBehaviour
 {
     public Camera mainCamera;
     public CameraController cameraController;
-    // public UIManager uiManager; // Descomentar cuando lo crees
+    public UIManager uiManager;
 
     private NodeController hoveredNode = null;
     private NodeController selectedNode = null;
@@ -35,7 +35,7 @@ public class SelectionManager : MonoBehaviour
                     if (hoveredNode != selectedNode) 
                         hoveredNode.OnHoverEnter();
                         
-                    // uiManager.ShowTooltip(hoveredNode.transform.position, hoveredNode.data.title);
+                    uiManager.ShowTooltip(hoveredNode.transform.position, hoveredNode.data.title);
                 }
 
                 // Manejo del Click Izquierdo
@@ -53,7 +53,7 @@ public class SelectionManager : MonoBehaviour
                 if (hoveredNode != selectedNode) 
                     hoveredNode.OnHoverExit();
                 hoveredNode = null;
-                // uiManager.HideTooltip();
+                uiManager.HideTooltip();
             }
         }
     }
@@ -66,6 +66,6 @@ public class SelectionManager : MonoBehaviour
         selectedNode.OnSelect(); // Enciende sus aristas secundarias
         
         cameraController.FocusOnNode(selectedNode.transform);
-        // uiManager.OpenDataPanel(selectedNode.data);
+        uiManager.OpenDataPanel(selectedNode.data);
     }
 }
