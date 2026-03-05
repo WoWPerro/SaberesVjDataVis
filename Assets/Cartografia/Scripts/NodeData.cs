@@ -34,6 +34,7 @@ public class NodeData : ScriptableObject
     [EnumToggleButtons]
     public SchonReflection ejeX_Schon; // X: -5, 0, 5
 
+    [HideIf("isMacroNode")]
     [BoxGroup("Evolución Temporal (ENA)")]
     [InfoBox("Curva de tamaño: Eje X = Tiempo (0 a 1), Eje Y = Escala del Micro-Nodo.")]
     public AnimationCurve scaleOverTime = AnimationCurve.EaseInOut(0f, 0.2f, 1f, 1f);

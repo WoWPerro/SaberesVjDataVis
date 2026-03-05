@@ -34,8 +34,8 @@ public class SelectionManager : MonoBehaviour
                     hoveredNode = node;
                     if (hoveredNode != selectedNode) 
                         hoveredNode.OnHoverEnter();
-                        
-                    uiManager.ShowTooltip(hoveredNode.transform.position, hoveredNode.data.title);
+
+                    uiManager.ShowTooltip(hoveredNode.transform.position, hoveredNode.data.nodeTitle);
                 }
 
                 // Manejo del Click Izquierdo

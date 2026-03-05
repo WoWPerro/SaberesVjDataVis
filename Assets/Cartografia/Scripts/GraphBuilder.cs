@@ -72,7 +72,7 @@ public class GraphBuilder : MonoBehaviour
                     orbitScript.targetMacroNode = macro.transform;
 
                     float angle = Random.Range(0f, Mathf.PI * 2f);
-                    float orbitRadius = Random.Range(2.5f, 4f);
+                    float orbitRadius = Random.Range(1.2f, 1.8f);
                     float offsetX = Mathf.Cos(angle) * orbitRadius;
                     float offsetY = Mathf.Sin(angle) * orbitRadius;
                     float zVariation = zOffsetForMicroNodes + Random.Range(-1f, 1f);

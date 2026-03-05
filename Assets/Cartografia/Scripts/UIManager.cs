@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
         {
             dataPanelGroup.alpha = 0f;
             dataPanelGroup.blocksRaycasts = false;
+            // Lo hacemos un poco más pequeño desde el inicio
+            dataPanelGroup.transform.localScale = new Vector3(0.8f, 0.8f, 1f); 
         }
     }
 
@@ -40,9 +42,20 @@ public class UIManager : MonoBehaviour
         // Animación de entrada con DOTween
         if (dataPanelGroup != null)
         {
-            dataPanelGroup.DOKill(); // Detenemos cualquier fade anterior
-            dataPanelGroup.blocksRaycasts = true; // Activar el panel para capturar eventos de UI (como un botón de cerrar)
-            dataPanelGroup.DOFade(1f, 0.5f).SetEase(Ease.OutQuad);
+            // Matamos animaciones previas por si el usuario hace clics muy rápido
+            dataPanelGroup.DOKill(); 
+            dataPanelGroup.transform.DOKill();
+
+            dataPanelGroup.blocksRaycasts = true;
+            dataPanelGroup.interactable = true;
+
+            // Estado inicial justo antes de aparecer
+            dataPanelGroup.alpha = 0f;
+            dataPanelGroup.transform.localScale = new Vector3(0.8f, 0.8f, 1f);
+
+            // La magia de DOTween: Fade + Scale con rebote elástico (OutBack)
+            dataPanelGroup.DOFade(1f, 0.4f).SetEase(Ease.OutQuad);
+            dataPanelGroup.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
         }
     }
 
@@ -56,14 +69,20 @@ public class UIManager : MonoBehaviour
         if (dataPanelGroup != null)
         {
             dataPanelGroup.DOKill();
-            dataPanelGroup.blocksRaycasts = false; // Desactivar la interacción inmediatamente
+            dataPanelGroup.transform.DOKill();
+
+            dataPanelGroup.blocksRaycasts = false;
+            dataPanelGroup.interactable = false;
+
+            // Se desvanece y se vuelve a encoger suavemente
             dataPanelGroup.DOFade(0f, 0.3f).SetEase(Ease.InQuad);
+            dataPanelGroup.transform.DOScale(0.8f, 0.3f).SetEase(Ease.InBack);
         }
 
         // Liberar el anclaje de la cámara
         if (cameraController != null)
         {
-            cameraController.BreakFocus();
+            cameraController.BreakFocus(); // Libera la cámara para usar WASD de nuevo
         }
     }
 
